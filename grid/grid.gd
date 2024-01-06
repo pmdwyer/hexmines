@@ -23,10 +23,6 @@ func _ready():
 	_setup_mines()
 
 
-func _process(delta):
-	var mouse_pos = get_viewport().get_mouse_position()
-
-
 func _setup_mines():
 	_num_mines = (width * height) / 10
 	for i in range(_num_mines):
@@ -41,3 +37,12 @@ func _create_mine(x: int, y: int):
 	for n in neighbors:
 		if n[0] >= 0 && n[0] < width && n[1] >= 0 && n[1] < height:
 			_tiles[n[0]][n[1]].num_neighbor_mines += 1
+
+
+func _process(delta):
+	var mouse_pos = get_viewport().get_mouse_position()
+	for row in _tiles:
+		for t in row:
+			if t.mouse_hit(mouse_pos):
+				%is_mine_value.text = str(t.is_mine)
+				%num_mines_value.text = str(t.num_neighbor_mines)
