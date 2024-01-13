@@ -24,16 +24,15 @@ func set_coords(i: int, j: int):
 
 
 func mouse_hit(mouse_pos: Vector2) -> bool:
-	if $Sprite2D:
-		return $Sprite2D.get_rect().has_point(to_local(mouse_pos))
+	if %HexSprite:
+		return %HexSprite.get_rect().has_point(to_local(mouse_pos))
 	return false
 
 
 func clear():
 	if not cleared:
 		cleared = true
-		$Sprite2D.queue_free()
-		remove_child($Sprite2D)
+		%HexSprite.hide()
 
 
 func get_neighbor_coords():
@@ -52,4 +51,14 @@ func get_neighbor_coords():
 	return neighbors
 
 
+func add_mine():
+	num_neighbor_mines += 1
+	%NumMinesLabel.text = str(num_neighbor_mines)
 
+
+func toggle_flag():
+	is_flagged = not is_flagged
+	if is_flagged:
+		%FlagSprite.show()
+	else:
+		%FlagSprite.hide()

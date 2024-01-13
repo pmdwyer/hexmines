@@ -33,7 +33,7 @@ func _create_mine(i: int):
 	_tiles[i].is_mine = true
 	var neighbors = _get_neighbors(_tiles[i])
 	for n in neighbors:
-		n.num_neighbor_mines += 1
+		n.add_mine()
 
 
 func _process(delta):
@@ -48,7 +48,13 @@ func _input(event):
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and event.pressed:
 		var mouse_pos = get_viewport().get_mouse_position()
 		var tile = _get_tile_at(mouse_pos)
-		_flood_clear(tile)
+		if tile:
+			_flood_clear(tile)
+	elif event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_RIGHT and event.pressed:
+		var mouse_pos = get_viewport().get_mouse_position()
+		var tile = _get_tile_at(mouse_pos)
+		if tile and not tile.cleared:
+			tile.toggle_flag()
 
 
 func _flood_clear(start):
@@ -56,9 +62,10 @@ func _flood_clear(start):
 	var seen = {}
 	while len(queue) > 0:
 		var tile = queue.pop_front()
-		for n in _get_neighbors(tile):
-			if n not in seen and not n.cleared and n.num_neighbor_mines == 0:
-				queue.push_back(n)
+		if tile.num_neighbor_mines == 0 and not tile.is_mine:
+			for n in _get_neighbors(tile):
+				if n not in seen and not n.cleared and not n.is_mine:
+					queue.push_back(n)
 		seen[tile] = true
 		tile.clear()
 
