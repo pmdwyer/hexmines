@@ -3,11 +3,13 @@ extends Node2D
 
 @export var width: int = 18
 @export var height: int = 6
+var hit_mine: bool = false
 
 
 var _tile: PackedScene = preload("res://tile/tile.tscn")
 var _num_mines: int = 0
 var _tiles = []
+var _mines = []
 
 
 func _ready():
@@ -31,6 +33,7 @@ func _setup_mines():
 
 func _create_mine(i: int):
 	_tiles[i].is_mine = true
+	_mines.append(_tiles[i])
 	var neighbors = _get_neighbors(_tiles[i])
 	for n in neighbors:
 		n.add_mine()
@@ -49,7 +52,10 @@ func _input(event):
 		var mouse_pos = get_viewport().get_mouse_position()
 		var tile = _get_tile_at(mouse_pos)
 		if tile:
-			_flood_clear(tile)
+			if not tile.is_mine:
+				_flood_clear(tile)
+			else:
+				hit_mine = true
 	elif event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_RIGHT and event.pressed:
 		var mouse_pos = get_viewport().get_mouse_position()
 		var tile = _get_tile_at(mouse_pos)
@@ -85,3 +91,7 @@ func _get_neighbors(tile):
 			if t.coords == nc:
 				neighbors.append(t)
 	return neighbors
+
+
+func game_over() -> bool:
+	return hit_mine or (_mines.all(func(m): return m.is_flagged) and _tiles.all(func(t): return t.is_mine or t.cleared))
