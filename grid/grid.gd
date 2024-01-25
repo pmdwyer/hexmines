@@ -10,6 +10,7 @@ var _tile: PackedScene = preload("res://tile/tile.tscn")
 var _num_mines: int = 0
 var _tiles = []
 var _mines = []
+var _selectedTile
 
 
 func _ready():
@@ -28,6 +29,8 @@ func _setup_mines():
 	_num_mines = (width * height) / 10
 	for i in range(_num_mines):
 		var t = randi() % (width * height)
+		while _tiles[t].is_mine:
+			t = randi() % (width * height)
 		_create_mine(t)
 
 
@@ -40,25 +43,27 @@ func _create_mine(i: int):
 
 
 func _process(delta):
-	var mouse_pos = get_viewport().get_mouse_position()
-	var tile = _get_tile_at(mouse_pos)
+	var tile = _get_tile_at_mouse()
 	if tile:
 		%is_mine_value.text = str(tile.is_mine)
 		%num_mines_value.text = str(tile.num_neighbor_mines)
 
 
 func _input(event):
+	var tile = _get_tile_at_mouse()
+	if event is InputEventMouse:
+		if tile:
+			if _selectedTile:
+				_selectedTile.unselect()
+			_selectedTile = tile
+			tile.select()
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and event.pressed:
-		var mouse_pos = get_viewport().get_mouse_position()
-		var tile = _get_tile_at(mouse_pos)
 		if tile:
 			if not tile.is_mine:
 				_flood_clear(tile)
 			else:
 				hit_mine = true
 	elif event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_RIGHT and event.pressed:
-		var mouse_pos = get_viewport().get_mouse_position()
-		var tile = _get_tile_at(mouse_pos)
 		if tile and not tile.cleared:
 			tile.toggle_flag()
 
@@ -76,7 +81,8 @@ func _flood_clear(start):
 		tile.clear()
 
 
-func _get_tile_at(mouse_pos):
+func _get_tile_at_mouse():
+	var mouse_pos = get_viewport().get_mouse_position()
 	for t in _tiles:
 		if t.mouse_hit(mouse_pos):
 			return t

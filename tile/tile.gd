@@ -10,7 +10,14 @@ extends Node2D
 
 var _global_x: int = 0
 var _global_y: int = 0
-var _size
+
+
+func select():
+	%SelectedSprite.show()
+
+
+func unselect():
+	%SelectedSprite.hide()
 
 
 func set_coords(i: int, j: int):

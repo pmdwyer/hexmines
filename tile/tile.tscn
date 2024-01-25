@@ -1,7 +1,8 @@
-[gd_scene load_steps=4 format=3 uid="uid://cm02a81pt1840"]
+[gd_scene load_steps=5 format=3 uid="uid://cm02a81pt1840"]
 
 [ext_resource type="Script" path="res://tile/tile.gd" id="1_gvvca"]
 [ext_resource type="Texture2D" uid="uid://d2nx50cgwl6pr" path="res://assets/textures/base_tile.png" id="2_cujbm"]
+[ext_resource type="Texture2D" uid="uid://svsydua56xdc" path="res://assets/textures/selected_tile.png" id="3_b53m8"]
 [ext_resource type="Texture2D" uid="uid://cnvf4xnyis047" path="res://assets/textures/flag_tile.png" id="3_wb1m8"]
 
 [node name="tile" type="Node2D"]
@@ -27,6 +28,11 @@ fit_content = true
 [node name="HexSprite" type="Sprite2D" parent="."]
 unique_name_in_owner = true
 texture = ExtResource("2_cujbm")
+
+[node name="SelectedSprite" type="Sprite2D" parent="."]
+unique_name_in_owner = true
+visible = false
+texture = ExtResource("3_b53m8")
 
 [node name="FlagSprite" type="Sprite2D" parent="."]
 unique_name_in_owner = true
