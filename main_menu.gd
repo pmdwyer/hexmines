@@ -1,22 +1,22 @@
 extends Control
 
 
-@export var game_scene: PackedScene = preload("res://game.tscn")
+signal start_game
 
 
-var _game
+func _ready():
+	var viewport_rect = get_viewport_rect()
+	var lsz = $Label.size
+	var lp = Vector2(viewport_rect.size.x * .5, viewport_rect.size.y * .1)
+	lp.x -= (lsz.x * 2)
+	lp.y -= (lsz.y * 2)
+	$Label.set_position(lp)
+	var bp = Vector2(viewport_rect.size.x * .5, viewport_rect.size.y * .5)
+	var bsz = $Button.size
+	bp.x -= (bsz.x * 2)
+	bp.y -= (bsz.y * 2)
+	$Button.set_position(bp)
 
 
 func _on_button_pressed():
-	_game = game_scene.instantiate()
-	_game.connect("game_over", _clean_up_game)
-	add_child(_game)
-	$Label.hide()
-	$Button.hide()
-
-
-func _clean_up_game():
-	remove_child(_game)
-	_game.queue_free()
-	$Label.show()
-	$Button.show()
+	start_game.emit()

@@ -13,10 +13,3 @@ offset_right = 619.0
 offset_bottom = 32.0
 text = "110000.00"
 metadata/_edit_group_ = true
-
-[node name="CompletedTimesList" type="RichTextLabel" parent="."]
-unique_name_in_owner = true
-offset_left = 760.0
-offset_top = 123.0
-offset_right = 1153.0
-offset_bottom = 646.0
