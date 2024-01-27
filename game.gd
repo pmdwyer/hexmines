@@ -6,6 +6,9 @@ var _grid
 var _total_time: float = 0.0
 
 
+signal game_over
+
+
 func _ready():
 	_create_grid()
 	add_child(_grid)
@@ -22,8 +25,8 @@ func _process(delta):
 			completed_time = "Won game in:\t%.2f\n" % _total_time
 		%CompletedTimesList.append_text(completed_time)
 		remove_child(_grid)
-		_create_grid()
-		add_child(_grid)
+		_grid.queue_free()
+		game_over.emit()
 
 
 func _create_grid():

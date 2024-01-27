@@ -42,13 +42,6 @@ func _create_mine(i: int):
 		n.add_mine()
 
 
-func _process(delta):
-	var tile = _get_tile_at_mouse()
-	if tile:
-		%is_mine_value.text = str(tile.is_mine)
-		%num_mines_value.text = str(tile.num_neighbor_mines)
-
-
 func _input(event):
 	var tile = _get_tile_at_mouse()
 	if event is InputEventMouse:

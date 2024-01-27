@@ -4,34 +4,3 @@
 
 [node name="grid" type="Node2D"]
 script = ExtResource("1_dm441")
-
-[node name="is_mine_label" type="RichTextLabel" parent="."]
-offset_left = 742.0
-offset_top = 29.0
-offset_right = 828.0
-offset_bottom = 54.0
-size_flags_horizontal = 3
-text = "Is Mine:"
-
-[node name="is_mine_value" type="RichTextLabel" parent="."]
-unique_name_in_owner = true
-offset_left = 855.0
-offset_top = 25.0
-offset_right = 951.0
-offset_bottom = 56.0
-size_flags_horizontal = 3
-
-[node name="num_mines_label" type="RichTextLabel" parent="."]
-offset_left = 740.0
-offset_top = 62.0
-offset_right = 834.0
-offset_bottom = 85.0
-size_flags_horizontal = 3
-text = "Num Mines:"
-
-[node name="num_mines_value" type="RichTextLabel" parent="."]
-unique_name_in_owner = true
-offset_left = 856.0
-offset_top = 56.0
-offset_right = 962.0
-offset_bottom = 84.0
