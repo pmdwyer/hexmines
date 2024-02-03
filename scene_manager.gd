@@ -25,6 +25,7 @@ func _main_menu():
 	_menu = main_menu_scene.instantiate()
 	get_viewport_transform()
 	_menu.connect("start_game", _start_game)
+	_menu.connect("score_screen", _score_screen)
 	add_child(_menu)
 
 
@@ -35,6 +36,9 @@ func _game_over():
 
 
 func _score_screen():
+	if _menu != null:
+		remove_child(_menu)
+		_menu.queue_free()
 	_score = score_scene.instantiate()
 	_score.connect("score_over", _restart)
 	add_child(_score)

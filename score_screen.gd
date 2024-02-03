@@ -6,12 +6,12 @@ signal score_over
 
 func _ready():
 	var scores = get_node("/root/Scores")
-	for s in scores.all_scores:
+	for i in range(len(scores.all_scores) - 1, -1, -1):
 		var t = ""
-		if s[0]:
-			t = "Won game in \t%.2f\n" % s[1]
+		if scores.all_scores[i][0]:
+			t = "%s:\tWon game in \t%.2f\n" % [scores.all_scores[i][2], scores.all_scores[i][1]]
 		else:
-			t = "Lost game in \t%.2f\n" % s[1]
+			t = "%s:\tLost game in \t%.2f\n" % [scores.all_scores[i][2], scores.all_scores[i][1]]
 		$RichTextLabel.add_text(t)
 
 

@@ -22,7 +22,7 @@ func _process(delta):
 		if not _grid.hit_mine:
 			won = true
 		var scores = get_node("/root/Scores")
-		scores.all_scores.append([won, total_time])
+		scores.all_scores.append([won, total_time, Time.get_datetime_string_from_system()])
 		remove_child(_grid)
 		_grid.queue_free()
 		game_over.emit()

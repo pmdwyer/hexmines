@@ -26,7 +26,7 @@ func _ready():
 
 
 func _setup_mines():
-	_num_mines = (width * height) / 10
+	_num_mines = (width * height) / 5
 	for i in range(_num_mines):
 		var t = randi() % (width * height)
 		while _tiles[t].is_mine:
