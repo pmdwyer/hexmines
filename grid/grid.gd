@@ -7,13 +7,26 @@ var hit_mine: bool = false
 
 
 var _tile: PackedScene = preload("res://tile/tile.tscn")
+var _bg_tile: PackedScene = preload("res://tile/bg_tile.tscn")
+var _highlight: PackedScene = preload("res://tile/selected_tile.tscn")
 var _num_mines: int = 0
 var _tiles = []
+var _highlights = []
 var _mines = []
-var _selectedTile
+var _hightlightedTile
 
 
 func _ready():
+	for i in range(width):
+		for j in range(height):
+			var bg_tile = _bg_tile.instantiate()
+			var x = (i * 32) + 64
+			var y = (j * 96) + 64
+			if (i % 2) == 1:
+				y += 48
+			bg_tile.position = Vector2i(x, y)
+			add_child(bg_tile)
+
 	var random = RandomNumberGenerator.new()
 	random.randomize()
 	for i in range(width):
@@ -23,6 +36,18 @@ func _ready():
 			_tiles.append(t)
 			add_child(t)
 	_setup_mines()
+
+	for i in range(width):
+		for j in range(height):
+			var hl = _highlight.instantiate()
+			var x = (i * 32) + 64
+			var y = (j * 96) + 64
+			if (i % 2) == 1:
+				y += 48
+			hl.translate(Vector2i(x, y))
+			#hl.show()
+			add_child(hl)
+			_highlights.append(hl)
 
 
 func _setup_mines():
@@ -43,20 +68,22 @@ func _create_mine(i: int):
 
 
 func _input(event):
-	var tile = _get_tile_at_mouse()
 	if event is InputEventMouse:
-		if tile:
-			if _selectedTile:
-				_selectedTile.unselect()
-			_selectedTile = tile
-			tile.select()
+		var hl = _get_highlight_at_mouse()
+		if hl:
+			#if _hightlightedTile:
+				#_hightlightedTile.hide()
+			#_hightlightedTile = hl
+			hl.show()
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and event.pressed:
+		var tile = _get_tile_at_mouse()
 		if tile:
 			if not tile.is_mine:
 				_flood_clear(tile)
 			else:
 				hit_mine = true
 	elif event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_RIGHT and event.pressed:
+		var tile = _get_tile_at_mouse()
 		if tile and not tile.cleared:
 			tile.toggle_flag()
 
@@ -72,6 +99,14 @@ func _flood_clear(start):
 					queue.push_back(n)
 		seen[tile] = true
 		tile.clear()
+
+
+func _get_highlight_at_mouse():
+	var mouse_pos = get_viewport().get_mouse_position()
+	for hl in _highlights:
+		if hl.get_rect().has_point(mouse_pos):
+			return hl
+	return null
 
 
 func _get_tile_at_mouse():

@@ -12,14 +12,6 @@ var _global_x: int = 0
 var _global_y: int = 0
 
 
-func select():
-	%SelectedSprite.show()
-
-
-func unselect():
-	%SelectedSprite.hide()
-
-
 func set_coords(i: int, j: int):
 	coords = Vector2i(i, j)
 	# TODO clean up magic numbers
