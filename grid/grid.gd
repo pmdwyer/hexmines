@@ -1,115 +1,36 @@
-extends Node2D
+class_name Grid extends Node2D
 
 
 @export var width: int = 18
 @export var height: int = 6
-var hit_mine: bool = false
+@export var tile_type: PackedScene
+@export var enable_click: bool = false
+@export var enable_hover: bool = false
 
 
-var _tile: PackedScene = preload("res://tile/tile.tscn")
-var _bg_tile: PackedScene = preload("res://tile/bg_tile.tscn")
-var _highlight: PackedScene = preload("res://tile/selected_tile.tscn")
-var _num_mines: int = 0
 var _tiles = []
-var _highlights = []
-var _mines = []
-var _hightlightedTile
 
 
-func _ready():
+func setup():
 	for i in range(width):
 		for j in range(height):
-			var bg_tile = _bg_tile.instantiate()
-			var x = (i * 32) + 64
-			var y = (j * 96) + 64
-			if (i % 2) == 1:
-				y += 48
-			bg_tile.position = Vector2i(x, y)
-			add_child(bg_tile)
-
-	var random = RandomNumberGenerator.new()
-	random.randomize()
-	for i in range(width):
-		for j in range(height):
-			var t = _tile.instantiate()
-			t.set_coords(i, j)
-			_tiles.append(t)
-			add_child(t)
-	_setup_mines()
-
-	for i in range(width):
-		for j in range(height):
-			var hl = _highlight.instantiate()
-			var x = (i * 32) + 64
-			var y = (j * 96) + 64
-			if (i % 2) == 1:
-				y += 48
-			hl.translate(Vector2i(x, y))
-			#hl.show()
-			add_child(hl)
-			_highlights.append(hl)
-
-
-func _setup_mines():
-	_num_mines = (width * height) / 5
-	for i in range(_num_mines):
-		var t = randi() % (width * height)
-		while _tiles[t].is_mine:
-			t = randi() % (width * height)
-		_create_mine(t)
-
-
-func _create_mine(i: int):
-	_tiles[i].is_mine = true
-	_mines.append(_tiles[i])
-	var neighbors = _get_neighbors(_tiles[i])
-	for n in neighbors:
-		n.add_mine()
+			var tile = tile_type.instantiate() as Tile
+			tile.set_coords(i, j)
+			add_child(tile)
 
 
 func _input(event):
-	if event is InputEventMouse:
-		var hl = _get_highlight_at_mouse()
-		if hl:
-			#if _hightlightedTile:
-				#_hightlightedTile.hide()
-			#_hightlightedTile = hl
-			hl.show()
+	if enable_hover and event is InputEventMouse:
+		pass
+	if not enable_click:
+		return
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and event.pressed:
-		var tile = _get_tile_at_mouse()
-		if tile:
-			if not tile.is_mine:
-				_flood_clear(tile)
-			else:
-				hit_mine = true
+		_get_tile_at_mouse().mouse_left_click()
 	elif event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_RIGHT and event.pressed:
-		var tile = _get_tile_at_mouse()
-		if tile and not tile.cleared:
-			tile.toggle_flag()
+		_get_tile_at_mouse().mouse_right_click()
 
 
-func _flood_clear(start):
-	var queue = [start]
-	var seen = {}
-	while len(queue) > 0:
-		var tile = queue.pop_front()
-		if tile.num_neighbor_mines == 0 and not tile.is_mine:
-			for n in _get_neighbors(tile):
-				if n not in seen and not n.cleared and not n.is_mine:
-					queue.push_back(n)
-		seen[tile] = true
-		tile.clear()
-
-
-func _get_highlight_at_mouse():
-	var mouse_pos = get_viewport().get_mouse_position()
-	for hl in _highlights:
-		if hl.get_rect().has_point(mouse_pos):
-			return hl
-	return null
-
-
-func _get_tile_at_mouse():
+func _get_tile_at_mouse() -> Tile:
 	var mouse_pos = get_viewport().get_mouse_position()
 	for t in _tiles:
 		if t.mouse_hit(mouse_pos):
@@ -125,7 +46,3 @@ func _get_neighbors(tile):
 			if t.coords == nc:
 				neighbors.append(t)
 	return neighbors
-
-
-func game_over() -> bool:
-	return hit_mine or (_mines.all(func(m): return m.is_flagged) and _tiles.all(func(t): return t.is_mine or t.cleared))

@@ -1,11 +1,11 @@
 [gd_scene load_steps=4 format=3 uid="uid://cm02a81pt1840"]
 
-[ext_resource type="Script" path="res://tile/tile.gd" id="1_gvvca"]
-[ext_resource type="Texture2D" uid="uid://d2nx50cgwl6pr" path="res://assets/textures/base_tile.png" id="2_cujbm"]
-[ext_resource type="Texture2D" uid="uid://cnvf4xnyis047" path="res://assets/textures/flag_tile.png" id="3_wb1m8"]
+[ext_resource type="Script" path="res://tile/main_tile.gd" id="1_i0lns"]
+[ext_resource type="Texture2D" uid="uid://d2nx50cgwl6pr" path="res://assets/textures/base_tile.png" id="2_t74fw"]
+[ext_resource type="Texture2D" uid="uid://cnvf4xnyis047" path="res://assets/textures/flag_tile.png" id="3_153vj"]
 
-[node name="tile" type="Node2D"]
-script = ExtResource("1_gvvca")
+[node name="main_tile" type="Node2D"]
+script = ExtResource("1_i0lns")
 metadata/_edit_group_ = true
 
 [node name="NumMinesLabel" type="RichTextLabel" parent="."]
@@ -26,9 +26,9 @@ fit_content = true
 
 [node name="HexSprite" type="Sprite2D" parent="."]
 unique_name_in_owner = true
-texture = ExtResource("2_cujbm")
+texture = ExtResource("2_t74fw")
 
 [node name="FlagSprite" type="Sprite2D" parent="."]
 unique_name_in_owner = true
 visible = false
-texture = ExtResource("3_wb1m8")
+texture = ExtResource("3_153vj")

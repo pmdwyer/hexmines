@@ -1,13 +1,7 @@
-extends Node2D
+class_name Tile extends Node2D
 
 
-@export var is_mine: bool = false
-@export var num_neighbor_mines: int = 0
-@export var is_flagged: bool = false
 @export var coords: Vector2i
-@export var cleared: bool = false
-
-
 var _global_x: int = 0
 var _global_y: int = 0
 
@@ -20,18 +14,6 @@ func set_coords(i: int, j: int):
 	if (coords.x % 2) == 1:
 		_global_y += 48
 	position = Vector2i(_global_x, _global_y)
-
-
-func mouse_hit(mouse_pos: Vector2) -> bool:
-	if %HexSprite:
-		return %HexSprite.get_rect().has_point(to_local(mouse_pos))
-	return false
-
-
-func clear():
-	if not cleared:
-		cleared = true
-		%HexSprite.hide()
 
 
 func get_neighbor_coords():
@@ -50,14 +32,21 @@ func get_neighbor_coords():
 	return neighbors
 
 
-func add_mine():
-	num_neighbor_mines += 1
-	%NumMinesLabel.text = str(num_neighbor_mines)
+func mouse_hit(mouse_pos: Vector2) -> bool:
+	return false
 
 
-func toggle_flag():
-	is_flagged = not is_flagged
-	if is_flagged:
-		%FlagSprite.show()
-	else:
-		%FlagSprite.hide()
+func mouse_right_click() -> void:
+	pass
+
+
+func mouse_left_click() -> void:
+	pass
+
+
+func mouse_enter() -> void:
+	pass
+
+
+func mouse_exit() -> void:
+	pass
