@@ -32,6 +32,10 @@ func get_neighbor_coords():
 	return neighbors
 
 
+func init() -> void:
+	pass
+
+
 func mouse_hit(mouse_pos: Vector2) -> bool:
 	return false
 

@@ -11,6 +11,11 @@ signal hit_mine
 signal tile_flag(flagged)
 
 
+func init():
+	if num_neighbor_mines > 0:
+		%NumMinesLabel.text = str(num_neighbor_mines)
+
+
 func mouse_hit(mouse_pos: Vector2) -> bool:
 	if %HexSprite:
 		return %HexSprite.get_rect().has_point(to_local(mouse_pos))
@@ -23,11 +28,6 @@ func mouse_left_click():
 	if not cleared:
 		cleared = true
 		%HexSprite.hide()
-
-
-func add_mine():
-	num_neighbor_mines += 1
-	%NumMinesLabel.text = str(num_neighbor_mines)
 
 
 func mouse_right_click():
