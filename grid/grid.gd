@@ -9,6 +9,7 @@ class_name Grid extends Node2D
 
 
 var _tiles = []
+var hover_tile: Tile = null
 
 
 func setup():
@@ -16,18 +17,28 @@ func setup():
 		for j in range(height):
 			var tile = tile_type.instantiate() as Tile
 			tile.set_coords(i, j)
+			_tiles.append(tile)
 			add_child(tile)
 
 
 func _input(event):
-	if enable_hover and event is InputEventMouse:
-		pass
+	if enable_hover and (event is InputEventMouse):
+		if hover_tile:
+			hover_tile.mouse_exit()
+		hover_tile = _get_tile_at_mouse()
+		if hover_tile:
+			hover_tile.mouse_enter()
+
 	if not enable_click:
 		return
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and event.pressed:
-		_get_tile_at_mouse().mouse_left_click()
+		var tile = _get_tile_at_mouse()
+		if tile:
+			tile.mouse_left_click()
 	elif event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_RIGHT and event.pressed:
-		_get_tile_at_mouse().mouse_right_click()
+		var tile = _get_tile_at_mouse()
+		if tile:
+			tile.mouse_right_click()
 
 
 func _get_tile_at_mouse() -> Tile:

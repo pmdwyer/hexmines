@@ -8,9 +8,6 @@
 
 [node name="main_game" type="Node2D"]
 script = ExtResource("1_v7n6o")
-background_tile = ExtResource("2_6rhkk")
-main_tile = ExtResource("3_1orgy")
-highlight_tile = ExtResource("4_4p8kx")
 
 [node name="TimeLabel" type="RichTextLabel" parent="."]
 unique_name_in_owner = true
@@ -22,7 +19,12 @@ text = "110000.00"
 metadata/_edit_group_ = true
 
 [node name="background_grid" parent="." instance=ExtResource("2_lctxg")]
+tile_type = ExtResource("2_6rhkk")
 
 [node name="main_grid" parent="." instance=ExtResource("2_lctxg")]
+tile_type = ExtResource("3_1orgy")
+enable_click = true
 
 [node name="highlight_grid" parent="." instance=ExtResource("2_lctxg")]
+tile_type = ExtResource("4_4p8kx")
+enable_hover = true

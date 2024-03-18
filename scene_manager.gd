@@ -1,7 +1,7 @@
 extends Node2D
 
 @export var main_menu_scene: PackedScene = preload("res://main_menu.tscn")
-@export var game_scene: PackedScene = preload("res://game.tscn")
+@export var game_scene: PackedScene = preload("res://main_game.tscn")
 @export var score_scene: PackedScene = preload("res://score_screen.tscn")
 
 var _menu

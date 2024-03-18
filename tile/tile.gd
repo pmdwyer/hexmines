@@ -45,8 +45,10 @@ func mouse_left_click() -> void:
 
 
 func mouse_enter() -> void:
+	print("mouse enter")
 	pass
 
 
 func mouse_exit() -> void:
+	print("mouse exit")
 	pass
